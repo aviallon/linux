@@ -119,6 +119,7 @@ void srcu_drive_gp(struct work_struct *wp)
 	ssp = container_of(wp, struct srcu_struct, srcu_work);
 	if (ssp->srcu_gp_running || ULONG_CMP_GE(ssp->srcu_idx, READ_ONCE(ssp->srcu_idx_max)))
 		return; /* Already running or nothing to do. */
+    /* TODO Should I add preempt_enable here ? */
 
 	/* Remove recently arrived callbacks and wait for readers. */
 	WRITE_ONCE(ssp->srcu_gp_running, true);
